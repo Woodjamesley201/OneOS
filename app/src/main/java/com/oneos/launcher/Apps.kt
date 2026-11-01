@@ -86,7 +86,7 @@ fun ClockApp(s: OsState) {
         1 -> { var running by remember { mutableStateOf(false) }; var elapsed by remember { mutableStateOf(0L) }
             val laps = remember { mutableStateListOf<Long>() }
             LaunchedEffect(running) { var last = System.currentTimeMillis(); while (running) { delay(16); val t = System.currentTimeMillis(); elapsed += t - last; last = t } }
-            Text(fmt(elapsed), color = Color.White, fontSize = 64.sp, fontWeight = FontWeight.Thin, modifier = Modifier.align(Alignment.CenterHorizontally))
+            Text(fmt(elapsed), color = Color.White, fontSize = 64.sp, fontWeight = FontWeight.Thin, modifier = Modifier.fillMaxWidth(), textAlign = androidx.compose.ui.text.style.TextAlign.Center)
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
                 GlassButton(if (running) "Lap" else "Reset", s) { if (running) laps.add(0, elapsed) else { elapsed = 0; laps.clear() } }
                 GlassButton(if (running) "Stop" else "Start", s) { running = !running } }
@@ -94,7 +94,7 @@ fun ClockApp(s: OsState) {
         else -> { var total by remember { mutableStateOf(300) }; var left by remember { mutableStateOf(300) }; var running by remember { mutableStateOf(false) }
             LaunchedEffect(running) { while (running && left > 0) { delay(1000); left-- }; if (left == 0) running = false }
             Text("%02d:%02d".format(left / 60, left % 60), color = if (left == 0) Color(0xFFFF453A) else Color.White, fontSize = 72.sp, fontWeight = FontWeight.Thin,
-                modifier = Modifier.align(Alignment.CenterHorizontally))
+                modifier = Modifier.fillMaxWidth(), textAlign = androidx.compose.ui.text.style.TextAlign.Center)
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
                 listOf(1, 5, 10, 30).forEach { m -> GlassButton("${m}m", s) { total = m * 60; left = total; running = false } } }
             Spacer(Modifier.height(12.dp))
